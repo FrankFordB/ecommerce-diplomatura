@@ -51,6 +51,9 @@ main .Productlist{
     transition: transform 0.5s;
 
 }
+.Product img {
+    width: 100%;
+}
 .Product button:hover {
     transform: scale(1.07);
 }

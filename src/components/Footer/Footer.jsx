@@ -1,4 +1,3 @@
-import Home from "../../views/Home"
 import "./Footer.css"
 
 const Footer = () => {

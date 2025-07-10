@@ -1,4 +1,4 @@
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Layout from "../components/Layout/Layout";
 import "../style/Dashboard.css"; // Assuming you have a CSS file for styling
 const Dashboard = () => {
@@ -6,13 +6,26 @@ const Dashboard = () => {
   const [price, setPrice] = useState("0");
   const [descripcion, setDescripcion] = useState("");
   const [error, setError] = useState("");
+  const [isDisabled, setIsDisabled] = useState (true);
   
+  
+    useEffect(() => {
+      if (price && name.length >  2 && descripcion > 2){
+        setIsDisabled(false);
+      }
+      else { setIsDisabled(true)
+        }
+      }, [price, name, descripcion]
+    );
+
   const handleName = (e) => {
     setName(e.target.value);
+    
   };
 
   const handlePrice = (e) => {
     setPrice(Number(e.target.value));
+    
   };
   const handleDescripcion = (e) => {
     setDescripcion(e.target.value);
@@ -21,19 +34,21 @@ const Dashboard = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !price || !descripcion) {
-        setError("Todos los campos son obligatorios");
-        return;
+        setError("Todos los campos son obligatorios")
+        return
     }
     
-    console.log({ name, price, descripcion });
+    
+    
     const newProduct = { name, price, descripcion };
     console.log("Producto agregado:", newProduct);
     setPrice("0");
     setName("");
     setDescripcion("");
     setError("");
+    setIsDisabled (true);
   };
-  console.log({ name, price, descripcion });
+  
   return (
     <>
       <Layout>
@@ -72,7 +87,7 @@ const Dashboard = () => {
               value={descripcion}
               placeholder="Descripción del producto"
             ></textarea>
-            <button type="submit">Agregar Producto</button>
+            <button disabled={isDisabled} type="submit">Agregar Producto</button>
             {error && <p style={{ color: "red" }}>{error}</p>}
           </form>
         </section>

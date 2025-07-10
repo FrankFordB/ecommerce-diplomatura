@@ -1,88 +1,27 @@
+import { useEffect, useState } from "react";
 import "./Main.css";
-const productos = [
-  {
-    nombre: "Bicicleta",
-    precio: 1000,
-    descripcion:
-      "20 cambios, cuadro de aluminio, disponible en todos los rodados",
-  },
-  {
-    nombre: "Windows 11 Activado",
-    precio: 3000,
-    descripcion: "Windows 11 sadfasdfasdfasdfasdfasdfasfa sdasfasdfas fas",
-  },
-  {
-    nombre: "Silla Gamer",
-    precio: 2000,
-    descripcion: "dssa asdasfasdf asdfasdfasdfas sadfasdfasdfasdf asfasdr",
-  },
-  {
-    nombre: "Bicicleta",
-    precio: 1000,
-    descripcion: "20 cambios, cuadro de aluminio, disponible en todos los rodados"
-  },
-  {
-    nombre: "Windows 11 Activado",
-    precio: 3000,
-    descripcion: "Windows 11"
-  },
-  {
-    nombre: "Silla Gamer",
-    precio: 2000,
-    descripcion: "Silla Gamer"
-  },
-  {
-    nombre: "Auriculares Bluetooth",
-    precio: 800,
-    descripcion: "Auriculares inalámbricos con cancelación de ruido"
-  },
-  {
-    nombre: "Teclado Mecánico",
-    precio: 1200,
-    descripcion: "Teclado mecánico retroiluminado RGB"
-  },
-  {
-    nombre: "Mouse Gamer",
-    precio: 700,
-    descripcion: "Mouse óptico con 7 botones programables"
-  },
-  {
-    nombre: "Monitor 24''",
-    precio: 3500,
-    descripcion: "Monitor LED Full HD de 24 pulgadas"
-  },
-  {
-    nombre: "Smartphone",
-    precio: 5000,
-    descripcion: "Celular Android con 128GB de almacenamiento"
-  },
-  {
-    nombre: "Tablet 10''",
-    precio: 4000,
-    descripcion: "Tablet con pantalla de 10 pulgadas y 64GB"
-  },
-  {
-    nombre: "Impresora Multifunción",
-    precio: 2500,
-    descripcion: "Impresora, escáner y copiadora WiFi"
-  },
-  {
-    nombre: "Parlante Bluetooth",
-    precio: 900,
-    descripcion: "Parlante portátil resistente al agua"
-  },
-  {
-    nombre: "Webcam HD",
-    precio: 600,
-    descripcion: "Cámara web HD 1080p para videollamadas"
-  },
-  {
-    nombre: "Disco SSD 1TB",
-    precio: 3200,
-    descripcion: "Disco sólido de 1TB para PC o notebook"}
-];
+
+
+
 
 const Main = () => {
+
+  const [productos, setProductos] = useState ([]);
+  const [errorJson, setErrorJson] = useState("");
+  const fetchinfProducts = async () => {
+  try {
+    const respuesta = await fetch("https://fakestoreapi.com/products")
+  const data = await respuesta.json()
+  setProductos(data);
+}catch (error)
+ {  setErrorJson("No pude conectarme con la API");
+
+}}
+useEffect(() =>{
+  fetchinfProducts()
+}, [])
+
+
   return (
     <main>
       <section className="banner">
@@ -92,13 +31,15 @@ const Main = () => {
 
       <section className="Productlist">
 
-        
-        {productos.map((productos, index) =>{
+        {productos.length === 0 && <p>No hay productos</p>}
+         <p> {errorJson} </p>
+        {productos.map((producto, index) =>{
             return (
           <div className="Product">
-          <h2>{productos.nombre}</h2>
-          <p>Precio: ${productos.precio}</p>
-          <p>Descripcion: {productos.descripcion}</p>
+            <img src={producto.image} alt={"imagen del producto" + producto.title} />
+          <h2>{producto.title}</h2>
+          <p>Precio: ${producto.price}</p>
+          <p>Descripcion: {producto.description}</p>
           <button>Comprar</button>
         </div>)
         })}
